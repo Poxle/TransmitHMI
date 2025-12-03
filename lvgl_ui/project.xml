@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    project.xml
+    Project Configuration for CAN Signal Sender Panel LVGL v9 UI
+    
+    This file defines the project structure, component hierarchy,
+    and metadata for the LVGL v9 UI application.
+-->
+<project>
+    <metadata>
+        <name>CAN Signal Sender Panel</name>
+        <version>1.0.0</version>
+        <description>LVGL v9 UI for ESP32-S3 CAN Signal Sender</description>
+        <author>Converted from React frontend</author>
+        <creation_date>2025-12-03</creation_date>
+        <lvgl_version>9.0</lvgl_version>
+        <target_platform>ESP32-S3</target_platform>
+    </metadata>
+    
+    <screen>
+        <width>172</width>
+        <height>640</height>
+        <orientation>portrait</orientation>
+        <color_depth>RGB565</color_depth>
+        <buffer_size>10752</buffer_size> <!-- 172 * 640 / 10 bytes -->
+    </screen>
+    
+    <component_hierarchy>
+        <!--
+            UI Component Tree Structure:
+            
+            main_screen (172x640)
+            ├── header (172x48)
+            │   ├── icon (radio symbol)
+            │   ├── title_label ("CAN BUS TX")
+            │   └── connection_switch
+            ├── log_display (172x215)
+            │   ├── log_textarea (172x155, scrollable)
+            │   └── clear_button
+            ├── content_area (172x297, scrollable)
+            │   ├── controls_container (auto mode)
+            │   │   ├── scene_label
+            │   │   ├── scene_grid (2x3 buttons)
+            │   │   ├── function_label
+            │   │   ├── category_dropdown
+            │   │   ├── function_dropdown
+            │   │   └── manual_button
+            │   └── manual_input_container (manual mode, hidden)
+            │       ├── back_button
+            │       ├── id_input
+            │       ├── data_input
+            │       ├── repeat_switch
+            │       └── interval_input (conditional)
+            └── footer (172x80)
+                ├── status_row
+                │   ├── status_indicator (circle)
+                │   ├── status_label
+                │   └── stop_button
+                └── transmit_button
+        -->
+        
+        <component name="main_screen" type="screen" file="ui_main.c">
+            <component name="header" type="container" file="ui_header.c">
+                <widgets>
+                    <widget type="container" name="left_container"/>
+                    <widget type="obj" name="icon"/>
+                    <widget type="label" name="title_label" text="CAN BUS TX"/>
+                    <widget type="switch" name="connection_switch"/>
+                </widgets>
+            </component>
+            
+            <component name="log_display" type="container" file="ui_log_display.c">
+                <widgets>
+                    <widget type="textarea" name="log_textarea" scrollable="true"/>
+                    <widget type="label" name="status_label" text="未连接"/>
+                    <widget type="button" name="clear_button" text="清空日志"/>
+                </widgets>
+            </component>
+            
+            <component name="content_area" type="container" scrollable="true">
+                <component name="controls" type="container" file="ui_controls.c" visible="true">
+                    <widgets>
+                        <widget type="label" name="scene_label" text="场景发送 (SCENE)"/>
+                        <widget type="grid" name="scene_grid" cols="2" rows="3">
+                            <button text="B" selected="true"/>
+                            <button text="BA"/>
+                            <button text="IGP"/>
+                            <button text="IGR"/>
+                            <button text="ST"/>
+                            <button text="ACC"/>
+                        </widget>
+                        <widget type="label" name="function_label" text="功能发送 (FUNCTION)"/>
+                        <widget type="dropdown" name="category_dropdown" options="3"/>
+                        <widget type="dropdown" name="function_dropdown" options="dynamic"/>
+                        <widget type="button" name="manual_button" text="手动输入"/>
+                    </widgets>
+                </component>
+                
+                <component name="manual_input" type="container" file="ui_manual_input.c" visible="false">
+                    <widgets>
+                        <widget type="button" name="back_button" text="返回"/>
+                        <widget type="textarea" name="id_input" placeholder="例如: 0x123"/>
+                        <widget type="textarea" name="data_input" placeholder="例如: [0x01, 0x02, 0x03]"/>
+                        <widget type="switch" name="repeat_switch"/>
+                        <widget type="textarea" name="interval_input" default="1000" conditional="true"/>
+                    </widgets>
+                </component>
+            </component>
+            
+            <component name="footer" type="container" file="ui_footer.c">
+                <widgets>
+                    <widget type="obj" name="status_indicator" shape="circle"/>
+                    <widget type="label" name="status_label" text="就绪"/>
+                    <widget type="button" name="stop_button" text="STOP" enabled="false"/>
+                    <widget type="button" name="transmit_button" text="TRANSMIT"/>
+                </widgets>
+            </component>
+        </component>
+    </component_hierarchy>
+    
+    <source_files>
+        <file path="ui_main.c" description="Main UI initialization"/>
+        <file path="ui_main.h" description="Main UI header"/>
+        <file path="ui_header.c" description="Header component"/>
+        <file path="ui_log_display.c" description="Log display component"/>
+        <file path="ui_controls.c" description="Auto mode controls"/>
+        <file path="ui_manual_input.c" description="Manual input mode"/>
+        <file path="ui_footer.c" description="Footer with status and buttons"/>
+        <file path="ui_state.c" description="State management implementation"/>
+        <file path="ui_state.h" description="State management header"/>
+        <file path="ui_binding.c" description="Data binding implementation"/>
+        <file path="ui_binding.h" description="Data binding header"/>
+        <file path="ui_config.c" description="Configuration implementation"/>
+        <file path="ui_config.h" description="Configuration header"/>
+        <file path="globals.xml" description="Global configuration data"/>
+        <file path="project.xml" description="Project metadata"/>
+    </source_files>
+    
+    <dependencies>
+        <dependency name="LVGL" version="9.0" required="true"/>
+        <dependency name="ESP-IDF" version="5.x" required="true"/>
+        <dependency name="display_driver" description="Display driver for ESP32-S3"/>
+        <dependency name="touch_driver" description="Touch input driver (optional)"/>
+    </dependencies>
+    
+    <build_configuration>
+        <compiler>xtensa-esp32s3-elf-gcc</compiler>
+        <optimization>-O2</optimization>
+        <defines>
+            <define name="LV_CONF_INCLUDE_SIMPLE"/>
+            <define name="LV_USE_LOG" value="1"/>
+            <define name="LV_COLOR_DEPTH" value="16"/>
+        </defines>
+        <include_paths>
+            <path>components/lvgl</path>
+            <path>lvgl_ui</path>
+        </include_paths>
+    </build_configuration>
+    
+    <resources>
+        <fonts>
+            <font name="montserrat_10" size="10" style="regular"/>
+            <font name="montserrat_12" size="12" style="regular"/>
+            <font name="montserrat_14" size="14" style="regular"/>
+        </fonts>
+        <symbols>
+            <symbol name="LV_SYMBOL_TRASH" description="Trash icon"/>
+            <symbol name="LV_SYMBOL_STOP" description="Stop icon"/>
+            <symbol name="LV_SYMBOL_UPLOAD" description="Upload/transmit icon"/>
+            <symbol name="LV_SYMBOL_LEFT" description="Left arrow"/>
+        </symbols>
+    </resources>
+</project>

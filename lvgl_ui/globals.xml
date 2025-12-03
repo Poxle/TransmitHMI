@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    globals.xml
+    Global Configuration for CAN Signal Sender Panel LVGL v9 UI
+    
+    This file contains global constants including colors, dimensions, fonts,
+    and string arrays used throughout the application.
+-->
+<globals>
+    <!-- Screen Dimensions -->
+    <dimensions>
+        <screen width="172" height="640"/>
+        <header height="48"/>
+        <log height="155"/>
+        <footer height="80"/>
+    </dimensions>
+    
+    <!-- Color Palette (RGB565 format for LVGL) -->
+    <colors>
+        <!-- Background Colors -->
+        <background>
+            <main value="0x0841" description="gray-950 (#0C0E14)"/>
+            <container value="0x1082" description="gray-900 (#111827)"/>
+            <input value="0x2124" description="gray-800 (#1F2937)"/>
+            <hover value="0x39C7" description="gray-700 (#374151)"/>
+            <black value="0x0000" description="pure black"/>
+        </background>
+        
+        <!-- Border Colors -->
+        <border>
+            <light value="0x39C7" description="gray-700 (#374151)"/>
+            <main value="0x2124" description="gray-800 (#1F2937)"/>
+        </border>
+        
+        <!-- Text Colors -->
+        <text>
+            <primary value="0xD6DA" description="gray-300 (#D1D5DB)"/>
+            <secondary value="0x9CF3" description="gray-400 (#9CA3AF)"/>
+            <muted value="0x6B4D" description="gray-500 (#6B7280)"/>
+            <disabled value="0x4A69" description="gray-600 (#4B5563)"/>
+            <white value="0xFFFF" description="pure white"/>
+        </text>
+        
+        <!-- Accent Colors -->
+        <accent>
+            <cyan600 value="0x0459" description="Primary buttons (#0891B2)"/>
+            <cyan500 value="0x05B6" description="Primary hover (#06B6D4)"/>
+            <cyan400 value="0x1677" description="Icons/highlights (#22D3EE)"/>
+        </accent>
+        
+        <!-- Status Colors -->
+        <status>
+            <green500 value="0x2530" description="Connected (#22C55E)"/>
+            <green400 value="0x3DE8" description="RX messages (#4ADE80)"/>
+            <red600 value="0xE123" description="Danger/stop (#DC2626)"/>
+            <red500 value="0xF224" description="Danger hover (#EF4444)"/>
+        </status>
+        
+        <!-- Disabled State -->
+        <disabled>
+            <bg value="0x39C7" description="gray-700"/>
+            <text value="0x6B4D" description="gray-500"/>
+        </disabled>
+    </colors>
+    
+    <!-- Font Sizes -->
+    <fonts>
+        <size name="small" value="10" description="Log timestamps"/>
+        <size name="normal" value="12" description="Most text"/>
+        <size name="medium" value="14" description="Headers"/>
+    </fonts>
+    
+    <!-- Spacing Constants -->
+    <spacing>
+        <padding>
+            <small value="4"/>
+            <medium value="8"/>
+            <large value="12"/>
+        </padding>
+        <gap>
+            <small value="4"/>
+            <medium value="8"/>
+        </gap>
+        <radius>
+            <small value="4"/>
+            <medium value="8"/>
+        </radius>
+    </spacing>
+    
+    <!-- Scene Options -->
+    <scenes>
+        <scene id="0" name="B" description="Base scene"/>
+        <scene id="1" name="BA" description="BA scene"/>
+        <scene id="2" name="IGP" description="IGP scene"/>
+        <scene id="3" name="IGR" description="IGR scene"/>
+        <scene id="4" name="ST" description="ST scene"/>
+        <scene id="5" name="ACC" description="ACC scene"/>
+    </scenes>
+    
+    <!-- Function Categories -->
+    <categories>
+        <category id="0" name="显示 (Display)" name_en="Display">
+            <function id="0" name="启动发动机" name_en="Start Engine" repeating="false"/>
+            <function id="1" name="油门控制" name_en="Throttle Control" repeating="true" interval="1500"/>
+            <function id="2" name="刹车控制" name_en="Brake Control" repeating="false"/>
+        </category>
+        
+        <category id="1" name="声音 (Sound)" name_en="Sound">
+            <function id="0" name="开启车灯" name_en="Turn On Lights" repeating="false"/>
+            <function id="1" name="解锁车门" name_en="Unlock Doors" repeating="false"/>
+            <function id="2" name="调节座椅" name_en="Adjust Seat" repeating="true" interval="2000"/>
+        </category>
+        
+        <category id="2" name="检查 (Inspection)" name_en="Inspection">
+            <function id="0" name="激活ABS" name_en="Activate ABS" repeating="false"/>
+            <function id="1" name="气囊检测" name_en="Airbag Check" repeating="true" interval="3000"/>
+            <function id="2" name="胎压监测" name_en="Tire Pressure" repeating="false"/>
+        </category>
+    </categories>
+    
+    <!-- Localized Strings -->
+    <strings>
+        <string id="app_title" zh="CAN BUS TX" en="CAN BUS TX"/>
+        <string id="connected" zh="已连接" en="Connected"/>
+        <string id="disconnected" zh="未连接" en="Disconnected"/>
+        <string id="waiting" zh="等待发送..." en="Waiting..."/>
+        <string id="clear_logs" zh="清空日志" en="Clear Logs"/>
+        <string id="scene_send" zh="场景发送 (SCENE)" en="Scene Send (SCENE)"/>
+        <string id="function_send" zh="功能发送 (FUNCTION)" en="Function Send (FUNCTION)"/>
+        <string id="manual_input" zh="手动输入" en="Manual Input"/>
+        <string id="back" zh="返回" en="Back"/>
+        <string id="can_id" zh="CAN ID" en="CAN ID"/>
+        <string id="data" zh="DATA" en="DATA"/>
+        <string id="repeat_send" zh="周期发送" en="Repeat Send"/>
+        <string id="interval_ms" zh="周期间隔 (ms)" en="Interval (ms)"/>
+        <string id="status_ready" zh="就绪" en="Ready"/>
+        <string id="status_transmitting" zh="发送中" en="Transmitting"/>
+        <string id="status_repeating" zh="重复" en="Repeating"/>
+        <string id="btn_stop" zh="STOP" en="STOP"/>
+        <string id="btn_transmit" zh="TRANSMIT" en="TRANSMIT"/>
+        <string id="placeholder_can_id" zh="例如: 0x123" en="e.g., 0x123"/>
+        <string id="placeholder_data" zh="例如: [0x01, 0x02, 0x03]" en="e.g., [0x01, 0x02, 0x03]"/>
+    </strings>
+</globals>
